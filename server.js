@@ -1,7 +1,7 @@
 //
 // 010.webhook.php recipe
 //
-// This recipe demonstrates use of the DocuSign webhook feature for 
+// This recipe demonstrates use of the DocuSign webhook feature for
 // status reports about an envelope's transactions.
 //
 // Run this script on a webserver that is accessible from the public
@@ -10,7 +10,7 @@
 // needs to call *to* this script/this url with status updates.
 //
 // This script expects an "op" query parameter. Values for "op" --
-//   send1    -- The script shows the parameters that will be used for the 
+//   send1    -- The script shows the parameters that will be used for the
 //               envelope.
 //   send2    -- The script will send an envelope to a recipient to sign.
 //               The envelope create call will use the webhook setting
@@ -97,7 +97,7 @@ app.post('/webhook', bodyParser.text({
 	var contentType = request.headers['content-type'] || '',
 		mime = contentType.split(';')[0];
 	console.log(mime);
-	console.log("webhook request body: " + JSON.stringify(request.body));
+	// console.log("webhook request body: " + JSON.stringify(request.body));
 	webhook(request.body);
 	response.send("Received!");
 });

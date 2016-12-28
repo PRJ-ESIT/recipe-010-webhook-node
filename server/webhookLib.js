@@ -178,6 +178,12 @@ WebhookLib.prototype.webhookListener = function(data) {
 							throw err;
 						}
 						console.log(data);
+						fs.exists(fullFilename, function(fileok){
+						  if(fileok)fs.readFile(fullFilename, function(error, data) {
+						    console.log("Contents: " + data);
+						  });
+						  else console.log("file not found");
+						});
 						// Box.com call
 						var sdk = new BoxSDK({
 			        clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
