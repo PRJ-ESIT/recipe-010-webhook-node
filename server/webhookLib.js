@@ -166,11 +166,12 @@ WebhookLib.prototype.webhookListener = function(data) {
 			nodeList = xml.DocuSignEnvelopeInformation.DocumentPDFs[0].DocumentPDF;
 			for (var i = 0; i < nodeList.length; i++) {
 				var pdf = nodeList[i];
-				console.log(pdf.PDFBytes[0]);
+				var pdfBytes = new Buffer(pdf.PDFBytes[0];
+				//console.log(pdf.PDFBytes[0]);
 				filename = "doc_" + (pdf.DocumentID ? pdf.DocumentID[0] : "") + ".pdf";
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				try {
-					fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
+					fs.writeFile(fullFilename, pdfBytes, 'base64'));
 
 					// Box.com call
 					var sdk = new BoxSDK({
@@ -192,7 +193,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 		        console.log(response);
 		      });
 
-					box.files.uploadFile('15078518730', fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'), function(err, response) {
+					box.files.uploadFile('15078518730', fullFilename, pdfBytes, function(err, response) {
 						if(err) throw err;
 						console.log(response);
 					})
