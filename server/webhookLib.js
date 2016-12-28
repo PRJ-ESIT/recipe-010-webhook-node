@@ -176,6 +176,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 						if(err) {
 							throw err;
 						}
+						console.log(data);
 						// Box.com call
 						var sdk = new BoxSDK({
 			        clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
@@ -196,7 +197,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			        console.log(response);
 			      });
 
-						box.files.uploadFile('15078518730', fullFilename, fs.readFileSync(fullFilename), function(err, response) {
+						box.files.uploadFile('15078518730', fullFilename, fs.readFileSync(path.resolve(fullFilename), function(err, response) {
 							if(err) throw err;
 							console.log(response);
 						})
