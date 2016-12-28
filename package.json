@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "DocuSign Connect webhook recipe.",
   "main": "server.js",
-  "engines" : { "node" : ">=5.4.0" },
+  "engines": {
+    "node": ">=5.4.0"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "semistandard && node server.js"
@@ -18,6 +20,7 @@
   },
   "dependencies": {
     "body-parser": "1.15.0",
+    "box-node-sdk": "^1.2.0",
     "docusign-esign": "2.0.3",
     "ejs": "2.3.3",
     "express": "4.13.3",
