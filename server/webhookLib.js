@@ -2,7 +2,8 @@
 const xmlParser = require('xml2js');
 const fs = require('fs');
 const path = require('path');
-
+// Initialize Box SDK
+var BoxSDK = require('box-node-sdk');
 const dsRecipeLib = require('./dsRecipeLib');
 var docusign
 
