@@ -183,7 +183,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			      });
 
 			      // Create a basic API client
-			      var box = sdk.getBasicClient('hrOByUjOE3CwAvtH9wSvQuAy61JVuMhz');
+			      var box = sdk.getBasicClient('RlZJ7JG5Rz5w5vs3cbSagCWHlarvceHq');
 
 			      // Get some of that sweet, sweet data!
 			      box.users.get(box.CURRENT_USER_ID, null, function(err, currentUser) {
