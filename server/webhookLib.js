@@ -176,6 +176,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			var box = sdk.getBasicClient('5OOcko5hP6FbyKm3VFQQ8dVo3F3175Ml');
 
 			for (var i = 0; i < nodeList.length; i++) {
+				console.log('nodeList.length: ' + nodeList.length);
 				var pdf = nodeList[i];
 				var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
 				//console.log(pdf.PDFBytes[0]);
@@ -183,7 +184,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				console.log('file' + i + ':' + fullFilename);
 				try {
-					fs.writeFile(fullFilename, pdfBytes);
+					fs.writeFileSync(fullFilename, pdfBytes);
 
 					var doc = fs.readFileSync(fullFilename);
 
