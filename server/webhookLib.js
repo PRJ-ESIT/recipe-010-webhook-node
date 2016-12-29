@@ -192,18 +192,29 @@ WebhookLib.prototype.webhookListener = function(data) {
 						if(err) {
 							// console.log('folders err: ' + err);
 							box.folders.create('15078518730', envelopeId, function(err, response) {
-								if(response) {
+								if(err) {
+									box.files.uploadFile(folderId, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+										console.log('uploadFile: ' + i);
+										if(err) console.log('box err:' + err);
+										console.log(response);
+									});
+								} else {
 									console.log(response.Id);
-									folderId = response.Id;
+									box.files.uploadFile(response.id, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+										console.log('uploadFile: ' + i);
+										if(err) console.log('box err:' + err);
+										console.log(response);
+									});
 								}
 							});
-						}
-						box.files.uploadFile(folderId, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+						} else {
+						box.files.uploadFile(response.id, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
 							console.log('uploadFile: ' + i);
 							if(err) console.log('box err:' + err);
 							console.log(response);
 						});
 						console.log('folders response: ' + response);
+						}
 					})
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
