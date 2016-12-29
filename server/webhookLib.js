@@ -188,7 +188,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 							console.log('writeFile err:' + err);
 						}
 
-						var doc = fs.readFile(fullFilename);
+						var doc = fs.readFileSync(fullFilename);
 
 						box.files.uploadFile('15078518730', "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
 							if(err) console.log('box err:' + err);
