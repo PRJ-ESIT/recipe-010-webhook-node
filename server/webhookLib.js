@@ -178,44 +178,50 @@ WebhookLib.prototype.webhookListener = function(data) {
 			for (var i = 0; i < nodeList.length; i++) {
 				console.log('nodeList.length: ' + nodeList.length);
 				var pdf = nodeList[i];
-				var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
+				// var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
 				//console.log(pdf.PDFBytes[0]);
 				filename = "doc_" + (pdf.DocumentID ? pdf.DocumentID[0] : "") + ".pdf";
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				console.log('file' + i + ':' + fullFilename);
 				try {
-					fs.writeFileSync(fullFilename, pdfBytes);
+					fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
 
-					var doc = fs.readFileSync(fullFilename);
-					var folderId = '15078518730';
-					box.folders.get(envelopeId, null, function(err, response) {
-						if(err) {
-							// console.log('folders err: ' + err);
-							box.folders.create('15078518730', envelopeId, function(err, response) {
-								if(err) {
-									box.files.uploadFile(folderId, "E" + envelopeId + "_" + i + ".pdf", fs.readFileSync(fullFilename), function(err, response) {
-										console.log('uploadFile: ' + i);
-										if(err) console.log('box err:' + err);
-										console.log(response);
-									});
-								} else {
-									console.log(response.Id);
-									box.files.uploadFile(response.id, "E" + envelopeId + "_" + i + ".pdf", fs.readFileSync(fullFilename), function(err, response) {
-										console.log('uploadFile: ' + i);
-										if(err) console.log('box err:' + err);
-										console.log(response);
-									});
-								}
-							});
-						} else {
-						box.files.uploadFile(envelopeId, "E" + envelopeId + "_" + i + ".pdf", fs.readFileSync(fullFilename), function(err, response) {
-							console.log('uploadFile: ' + i);
-							if(err) console.log('box err:' + err);
-							console.log(response);
-						});
-						// console.log('folders response: ' + response);
-						}
-					})
+					(function(filename, envId) {
+						var doc = fs.readFileSync(filename);
+						var folderId = '15078518730';
+						box.folders.get(envId, null, function(err, response) {
+							if(err) {
+								console.log('folder not found');
+								// console.log('folders err: ' + err);
+								box.folders.create('15078518730', envId, function(err, response) {
+									if(err) {
+										console.log('could not create folder');
+										box.files.uploadFile(folderId, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
+											console.log('uploadFile: ' + i);
+											if(err) console.log('box err:' + err);
+											console.log(response);
+										});
+									} else {
+										console.log('folder was found: ' + response.Id);
+										box.files.uploadFile(response.id, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
+											console.log('uploadFile: ' + i);
+											if(err) console.log('box err:' + err);
+											console.log(response);
+										});
+									}
+								});
+							} else {
+								console.log('folder was already created');
+								box.files.uploadFile(envId, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
+									console.log('uploadFile: ' + i);
+									if(err) console.log('box err:' + err);
+									console.log(response);
+								});
+							// console.log('folders response: ' + response);
+							}
+						})
+					})(fullFilename, envelopeId);
+
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
 					console.error("!!!!!! PROBLEM DocuSign Webhook: Couldn't store pdf " + filename + " !");
