@@ -200,7 +200,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 
 						fs.exists(fullFilename, function(fileok){
 						  if(fileok) {
-								var temp = fs.readFileSync(fullFilename, 'base64');
+								var temp = fs.readFileSync(fullFilename);
 								box.files.uploadFile('15078518730', "E" + envelopeId, temp, function(err, response) {
 									if(err) throw err;
 									console.log(response);
