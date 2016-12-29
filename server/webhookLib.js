@@ -183,18 +183,14 @@ WebhookLib.prototype.webhookListener = function(data) {
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				console.log('file' + i + ':' + fullFilename);
 				try {
-					fs.writeFile(fullFilename, pdfBytes, function(err, data) {
-						if(err) {
-							console.log('writeFile err:' + err);
-						}
+					fs.writeFile(fullFilename, pdfBytes);
 
-						var doc = fs.readFileSync(fullFilename);
+					var doc = fs.readFileSync(fullFilename);
 
-						box.files.uploadFile('15078518730', "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
-							console.log('uploadFile: ' + i);
-							if(err) console.log('box err:' + err);
-							console.log(response);
-						});
+					box.files.uploadFile('15078518730', "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+						console.log('uploadFile: ' + i);
+						if(err) console.log('box err:' + err);
+						console.log(response);
 					});
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
