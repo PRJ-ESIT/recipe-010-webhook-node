@@ -179,14 +179,22 @@ WebhookLib.prototype.webhookListener = function(data) {
 						}
 						console.log(data);
 						fs.exists(fullFilename, function(fileok){
-						  if(fileok)fs.readFile(fullFilename, function(error, data) {
-						    // console.log("Contents: " + data);
-								box.files.uploadFile('15078518730', fullFilename, data, function(err, response) {
-									if(err) throw err;
-									console.log(response);
-								})
-						  });
-						  else console.log("file not found");
+						  if(fileok) {
+								var temp = fs.createReadStream(fullFilename);
+								temp.on('end', function() {
+									console.log('end');
+									box.files.uploadFile('15078518730', fullFilename, temp, function(err, response) {
+										if(err) throw err;
+										console.log(response);
+									})
+								});
+								temp.on('error', function(err)) {
+									console.log(err);
+								}
+							}
+						  else {
+								console.log("file not found");
+							}
 						});
 						// Box.com call
 						var sdk = new BoxSDK({
