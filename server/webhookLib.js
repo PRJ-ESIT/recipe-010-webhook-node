@@ -187,7 +187,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			      var box = sdk.getBasicClient('IfPe0NkqnQWDlwY5vcXFeK8BWVH74lF4');
 
 						fs.readFile(fullFilename, function(err, data) {
-							box.files.uploadFile('15078518730', "E" + envelopeId + '.pdf', data, function(err, response) {
+							box.files.uploadFile('15078518730', "E" + envelopeId + filename, data, function(err, response) {
 								if(err) throw err;
 								console.log(response);
 							});
