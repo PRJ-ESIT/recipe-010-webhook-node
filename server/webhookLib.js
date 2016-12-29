@@ -181,14 +181,14 @@ WebhookLib.prototype.webhookListener = function(data) {
 				//console.log(pdf.PDFBytes[0]);
 				filename = "doc_" + (pdf.DocumentID ? pdf.DocumentID[0] : "") + ".pdf";
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
-				console.log('file' i + ':' + fullFilename);
+				console.log('file' + i + ':' + fullFilename);
 				try {
 					fs.writeFile(fullFilename, pdfBytes, function(err, data) {
-						if('writeFile err:' err) {
-							throw err;
+						if(err) {
+							console.log('writeFile err:' + err);
 						}
 						box.files.uploadFile('15078518730', "E" + envelopeId + filename, new Buffer(data), function(err, response) {
-							if('box err': err) throw err;
+							if(err) console.log('box err': err);
 							console.log(response);
 						});
 						// fs.readFile(fullFilename, function(err, data) {
