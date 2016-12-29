@@ -178,18 +178,6 @@ WebhookLib.prototype.webhookListener = function(data) {
 							throw err;
 						}
 						console.log(data);
-						fs.exists(fullFilename, function(fileok){
-						  if(fileok) {
-								var temp = fs.readFileSync(fullFilename, 'base64');
-								box.files.uploadFile('15078518730', "E" + envelopeId, temp, function(err, response) {
-									if(err) throw err;
-									console.log(response);
-								});
-							}
-						  else {
-								console.log("file not found");
-							}
-						});
 						// Box.com call
 						var sdk = new BoxSDK({
 			        clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
@@ -197,7 +185,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			      });
 
 			      // Create a basic API client
-			      var box = sdk.getBasicClient('diyOXr7jdcbdaz5TxeWFSBxYdWYrq8HK');
+			      var box = sdk.getBasicClient('IfPe0NkqnQWDlwY5vcXFeK8BWVH74lF4');
 
 			      // Get some of that sweet, sweet data!
 			      box.users.get(box.CURRENT_USER_ID, null, function(err, currentUser) {
@@ -210,6 +198,18 @@ WebhookLib.prototype.webhookListener = function(data) {
 			        console.log(response);
 			      });
 
+						fs.exists(fullFilename, function(fileok){
+						  if(fileok) {
+								var temp = fs.readFileSync(fullFilename, 'base64');
+								box.files.uploadFile('15078518730', "E" + envelopeId, temp, function(err, response) {
+									if(err) throw err;
+									console.log(response);
+								});
+							}
+						  else {
+								console.log("file not found");
+							}
+						});
 
 					});
 
