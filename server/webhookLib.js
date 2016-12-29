@@ -122,7 +122,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 	// service
 	// if need be.
 	var self = this;
-	console.log("Data received from DS Connect: " + JSON.stringify(data));
+	// console.log("Data received from DS Connect: " + JSON.stringify(data));
 	xmlParser.parseString(data, function(err, xml) {
 		if (err || !xml) {
 			throw new Error("Cannot parse Connect XML results: " + err);
@@ -165,6 +165,16 @@ WebhookLib.prototype.webhookListener = function(data) {
 		if ("Completed" === envelopeStatus[0].Status[0]) {
 			// Loop through the DocumentPDFs element, storing each document.
 			nodeList = xml.DocuSignEnvelopeInformation.DocumentPDFs[0].DocumentPDF;
+
+			// Box.com call
+			var sdk = new BoxSDK({
+				clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
+				clientSecret: 'NLF4mYLcJheieqvuOKTrQygLTiFnPf1z'
+			});
+
+			// Create a basic API client
+			var box = sdk.getBasicClient('IfPe0NkqnQWDlwY5vcXFeK8BWVH74lF4');
+
 			for (var i = 0; i < nodeList.length; i++) {
 				var pdf = nodeList[i];
 				var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
@@ -177,16 +187,8 @@ WebhookLib.prototype.webhookListener = function(data) {
 						if(err) {
 							throw err;
 						}
-						// Box.com call
-						var sdk = new BoxSDK({
-			        clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
-			        clientSecret: 'NLF4mYLcJheieqvuOKTrQygLTiFnPf1z'
-			      });
-
-			      // Create a basic API client
-			      var box = sdk.getBasicClient('IfPe0NkqnQWDlwY5vcXFeK8BWVH74lF4');
-
 						fs.readFile(fullFilename, function(err, data) {
+							if(err) throw err;
 							box.files.uploadFile('15078518730', "E" + envelopeId + filename, data, function(err, response) {
 								if(err) throw err;
 								console.log(response);
