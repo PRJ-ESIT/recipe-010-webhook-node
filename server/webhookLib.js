@@ -208,12 +208,12 @@ WebhookLib.prototype.webhookListener = function(data) {
 								}
 							});
 						} else {
-						box.files.uploadFile(response.id, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+						box.files.uploadFile(envelopeId, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
 							console.log('uploadFile: ' + i);
 							if(err) console.log('box err:' + err);
 							console.log(response);
 						});
-						console.log('folders response: ' + response);
+						// console.log('folders response: ' + response);
 						}
 					})
 				} catch (ex) {
