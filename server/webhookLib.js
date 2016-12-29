@@ -184,7 +184,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				console.log('file' + i + ':' + fullFilename);
 				try {
-					fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
+					fs.writeFileSync(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
 
 					(function(filename, envId) {
 						var doc = fs.readFileSync(filename);
