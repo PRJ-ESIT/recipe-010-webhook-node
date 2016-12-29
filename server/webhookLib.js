@@ -193,14 +193,14 @@ WebhookLib.prototype.webhookListener = function(data) {
 							// console.log('folders err: ' + err);
 							box.folders.create('15078518730', envelopeId, function(err, response) {
 								if(err) {
-									box.files.uploadFile(folderId, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+									box.files.uploadFile(folderId, "E" + envelopeId + "_" + i + ".pdf", fs.readFileSync(fullFilename), function(err, response) {
 										console.log('uploadFile: ' + i);
 										if(err) console.log('box err:' + err);
 										console.log(response);
 									});
 								} else {
 									console.log(response.Id);
-									box.files.uploadFile(response.id, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+									box.files.uploadFile(response.id, "E" + envelopeId + "_" + i + ".pdf", fs.readFileSync(fullFilename), function(err, response) {
 										console.log('uploadFile: ' + i);
 										if(err) console.log('box err:' + err);
 										console.log(response);
@@ -208,7 +208,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 								}
 							});
 						} else {
-						box.files.uploadFile(envelopeId, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+						box.files.uploadFile(envelopeId, "E" + envelopeId + "_" + i + ".pdf", fs.readFileSync(fullFilename), function(err, response) {
 							console.log('uploadFile: ' + i);
 							if(err) console.log('box err:' + err);
 							console.log(response);
