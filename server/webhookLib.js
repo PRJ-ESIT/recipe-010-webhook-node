@@ -188,9 +188,9 @@ WebhookLib.prototype.webhookListener = function(data) {
 										console.log(response);
 									})
 								});
-								temp.on('error', function(err)) {
+								temp.on('error', function(err) {
 									console.log(err);
-								}
+								});
 							}
 						  else {
 								console.log("file not found");
