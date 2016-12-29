@@ -180,16 +180,10 @@ WebhookLib.prototype.webhookListener = function(data) {
 						console.log(data);
 						fs.exists(fullFilename, function(fileok){
 						  if(fileok) {
-								var temp = fs.createReadStream(fullFilename);
-								temp.on('end', function() {
-									console.log('end');
-									box.files.uploadFile('15078518730', fullFilename, temp, function(err, response) {
-										if(err) throw err;
-										console.log(response);
-									})
-								});
-								temp.on('error', function(err) {
-									console.log(err);
+								var temp = fs.readFileSync(fullFilename, 'base64');
+								box.files.uploadFile('15078518730', fullFilename, temp, function(err, response) {
+									if(err) throw err;
+									console.log(response);
 								});
 							}
 						  else {
