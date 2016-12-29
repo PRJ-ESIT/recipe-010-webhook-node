@@ -187,13 +187,17 @@ WebhookLib.prototype.webhookListener = function(data) {
 						if(err) {
 							throw err;
 						}
-						fs.readFile(fullFilename, function(err, data) {
+						box.files.uploadFile('15078518730', "E" + envelopeId + filename, data, function(err, response) {
 							if(err) throw err;
-							box.files.uploadFile('15078518730', "E" + envelopeId + filename, data, function(err, response) {
-								if(err) throw err;
-								console.log(response);
-							});
+							console.log(response);
 						});
+						// fs.readFile(fullFilename, function(err, data) {
+						// 	if(err) throw err;
+						// 	box.files.uploadFile('15078518730', "E" + envelopeId + filename, data, function(err, response) {
+						// 		if(err) throw err;
+						// 		console.log(response);
+						// 	});
+						// });
 					});
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
