@@ -177,7 +177,6 @@ WebhookLib.prototype.webhookListener = function(data) {
 						if(err) {
 							throw err;
 						}
-						console.log(data);
 						// Box.com call
 						var sdk = new BoxSDK({
 			        clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
@@ -187,33 +186,13 @@ WebhookLib.prototype.webhookListener = function(data) {
 			      // Create a basic API client
 			      var box = sdk.getBasicClient('IfPe0NkqnQWDlwY5vcXFeK8BWVH74lF4');
 
-			      // Get some of that sweet, sweet data!
-			      box.users.get(box.CURRENT_USER_ID, null, function(err, currentUser) {
-			        if(err) throw err;
-			        console.log('Hello, ' + currentUser.name + '!');
-			      });
-
-			      box.folders.getItems('15078518730', {qs: {fields: 'id,name'}}, function(err, response) {
-			        if(err) throw err;
-			        console.log(response);
-			      });
-
-						fs.exists(fullFilename, function(fileok){
-						  if(fileok) {
-								var temp = fs.readFileSync(fullFilename);
-								box.files.uploadFile('15078518730', "E" + envelopeId, temp, function(err, response) {
-									if(err) throw err;
-									console.log(response);
-								});
-							}
-						  else {
-								console.log("file not found");
-							}
+						fs.readFile(fullFilename, function(err, data) {
+							box.files.uploadFile('15078518730', "E" + envelopeId + '.pdf', data, function(err, response) {
+								if(err) throw err;
+								console.log(response);
+							});
 						});
-
 					});
-
-
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
 					console.error("!!!!!! PROBLEM DocuSign Webhook: Couldn't store pdf " + filename + " !");
