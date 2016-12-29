@@ -187,29 +187,24 @@ WebhookLib.prototype.webhookListener = function(data) {
 					fs.writeFileSync(fullFilename, pdfBytes);
 
 					var doc = fs.readFileSync(fullFilename);
-
+					var folderId = '15078518730';
 					box.folders.get(envelopeId, null, function(err, response) {
 						if(err) {
 							// console.log('folders err: ' + err);
 							box.folders.create('15078518730', envelopeId, function(err, response) {
 								if(response) {
-									console.log(response);
-									// box.files.uploadFile('15078518730', "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
-									// 	console.log('uploadFile: ' + i);
-									// 	if(err) console.log('box err:' + err);
-									// 	console.log(response);
-									// });
+									console.log(response.Id);
+									folderId = response.Id;
 								}
 							});
 						}
+						box.files.uploadFile(folderId, "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
+							console.log('uploadFile: ' + i);
+							if(err) console.log('box err:' + err);
+							console.log(response);
+						});
 						console.log('folders response: ' + response);
 					})
-
-					box.files.uploadFile('15078518730', "E" + envelopeId + "_" + i + ".pdf", doc, function(err, response) {
-						console.log('uploadFile: ' + i);
-						if(err) console.log('box err:' + err);
-						console.log(response);
-					});
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
 					console.error("!!!!!! PROBLEM DocuSign Webhook: Couldn't store pdf " + filename + " !");
