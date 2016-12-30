@@ -166,16 +166,20 @@ WebhookLib.prototype.webhookListener = function(data) {
 			// Loop through the DocumentPDFs element, storing each document.
 			nodeList = xml.DocuSignEnvelopeInformation.DocumentPDFs[0].DocumentPDF;
 
-			// Box.com call
-			var sdk = new BoxSDK({
-				clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
-				clientSecret: 'NLF4mYLcJheieqvuOKTrQygLTiFnPf1z'
-			});
-
-			// Create a basic API client
-			var box = sdk.getBasicClient('GfsDfHbr2Q5BbdbLDs7ZqQqGXy8r3NAY');
+			// // Box.com call
+			// var sdk = new BoxSDK({
+			// 	clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
+			// 	clientSecret: 'NLF4mYLcJheieqvuOKTrQygLTiFnPf1z'
+			// });
+			//
+			// // Create a basic API client
+			// var box = sdk.getBasicClient('GfsDfHbr2Q5BbdbLDs7ZqQqGXy8r3NAY');
 
 			for (var i = 0; i < nodeList.length; i++) {
+
+				(function() {
+
+
 				console.log('nodeList.length: ' + nodeList.length);
 				var pdf = nodeList[i];
 				// var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
@@ -184,9 +188,12 @@ WebhookLib.prototype.webhookListener = function(data) {
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				console.log('file' + i + ':' + fullFilename);
 				try {
-					fs.writeFileSync(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
+					fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
 
-					(function(filename, envId) {
+
+
+
+
 						var doc = fs.readFileSync(filename);
 						var folderId = '15078518730';
 						box.folders.get(envId, null, function(err, response) {
@@ -220,7 +227,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 							// console.log('folders response: ' + response);
 							}
 						})
-					})(fullFilename, envelopeId);
+
 
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
@@ -228,6 +235,9 @@ WebhookLib.prototype.webhookListener = function(data) {
 					return;
 				}
 			}
+
+})();
+
 		}
 		return;
 	});
