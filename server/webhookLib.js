@@ -222,7 +222,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 									});
 								// console.log('folders response: ' + response);
 								}
-							}
+							});
 							callback();
 						}
 					});
