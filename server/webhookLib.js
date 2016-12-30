@@ -206,9 +206,9 @@ WebhookLib.prototype.webhookListener = function(data) {
 												callback();
 											});
 										} else {
-											console.log('folder was created: ' + response);
+											console.log('folder was created: ' + JSON.stringify(response));
 											box.files.uploadFile(response.id, "E" + envelopeId + "_" + filename, data, function(err, response) {
-												console.log('uploadFile: ' + i);
+												console.log('uploadFile: ' + filename);
 												if(err) console.log('box err:' + err);
 												console.log(response);
 												callback();
