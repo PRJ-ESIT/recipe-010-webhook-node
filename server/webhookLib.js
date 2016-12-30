@@ -166,14 +166,14 @@ WebhookLib.prototype.webhookListener = function(data) {
 			// Loop through the DocumentPDFs element, storing each document.
 			nodeList = xml.DocuSignEnvelopeInformation.DocumentPDFs[0].DocumentPDF;
 
-			// // Box.com call
-			// var sdk = new BoxSDK({
-			// 	clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
-			// 	clientSecret: 'NLF4mYLcJheieqvuOKTrQygLTiFnPf1z'
-			// });
-			//
-			// // Create a basic API client
-			// var box = sdk.getBasicClient('GfsDfHbr2Q5BbdbLDs7ZqQqGXy8r3NAY');
+			// Box.com call
+			var sdk = new BoxSDK({
+				clientID: 'fmoj564gllo2g90aykbejymeyr8g73am',
+				clientSecret: 'NLF4mYLcJheieqvuOKTrQygLTiFnPf1z'
+			});
+
+			// Create a basic API client
+			var box = sdk.getBasicClient('GfsDfHbr2Q5BbdbLDs7ZqQqGXy8r3NAY');
 
 			for (var i = 0; i < nodeList.length; i++) {
 
@@ -188,7 +188,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
 				console.log('file' + i + ':' + fullFilename);
 				try {
-					fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
+					fs.writeFileSync(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
 
 
 
