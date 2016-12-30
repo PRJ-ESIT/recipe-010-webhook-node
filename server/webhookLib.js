@@ -192,21 +192,21 @@ WebhookLib.prototype.webhookListener = function(data) {
 							// var doc = fs.readFileSync(filename);
 							var folderId = '15078518730';
 							// Attempt to save to box
-							box.folders.get(envId, null, function(err, response) {
+							box.folders.get(envelopeId, null, function(err, response) {
 								if(err) {
 									console.log('folder not found');
 									// console.log('folders err: ' + err);
-									box.folders.create('15078518730', envId, function(err, response) {
+									box.folders.create('15078518730', envelopeId, function(err, response) {
 										if(err) {
 											console.log('could not create folder');
-											box.files.uploadFile(folderId, "E" + envId + "_" + filename, data, function(err, response) {
+											box.files.uploadFile(folderId, "E" + envelopeId + "_" + filename, data, function(err, response) {
 												console.log('uploadFile: ' + i);
 												if(err) console.log('box err:' + err);
 												console.log(response);
 											});
 										} else {
 											console.log('folder was found: ' + response.Id);
-											box.files.uploadFile(response.id, "E" + envId + "_" + filename, data, function(err, response) {
+											box.files.uploadFile(response.id, "E" + envelopeId + "_" + filename, data, function(err, response) {
 												console.log('uploadFile: ' + i);
 												if(err) console.log('box err:' + err);
 												console.log(response);
@@ -215,7 +215,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 									});
 								} else {
 									console.log('folder was already created');
-									box.files.uploadFile(envId, "E" + envId + "_" + filename, data, function(err, response) {
+									box.files.uploadFile(envelopeId, "E" + envelopeId + "_" + filename, data, function(err, response) {
 										console.log('uploadFile: ' + i);
 										if(err) console.log('box err:' + err);
 										console.log(response);
