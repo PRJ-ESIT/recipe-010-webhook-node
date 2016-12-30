@@ -203,6 +203,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 												console.log('uploadFile: ' + i);
 												if(err) console.log('box err:' + err);
 												console.log(response);
+												callback();
 											});
 										} else {
 											console.log('folder was found: ' + response.Id);
@@ -210,6 +211,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 												console.log('uploadFile: ' + i);
 												if(err) console.log('box err:' + err);
 												console.log(response);
+												callback();
 											});
 										}
 									});
@@ -219,11 +221,11 @@ WebhookLib.prototype.webhookListener = function(data) {
 										console.log('uploadFile: ' + i);
 										if(err) console.log('box err:' + err);
 										console.log(response);
+										callback();
 									});
 								// console.log('folders response: ' + response);
 								}
 							});
-							callback();
 						}
 					});
 				} catch (ex) {
