@@ -198,6 +198,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 					return;
 				}
 			}, function(err) {
+				if(err) {
 				// One of the iterations produced an error.
       	// All processing will now stop.
       	console.log('A file failed to process');
