@@ -198,12 +198,13 @@ WebhookLib.prototype.webhookListener = function(data) {
 					return;
 				}
 			}, function(err) {
-				if(err) {
-				// One of the iterations produced an error.
-      	// All processing will now stop.
-      	console.log('A file failed to process');
-    	} else {
-      	console.log('All files have been processed successfully');
+					if(err) {
+						// One of the iterations produced an error.
+      			// All processing will now stop.
+      			console.log('A file failed to process');
+    			} else {
+      		console.log('All files have been processed successfully');
+					}
 			});
 
 			// for (var i = 0; i < nodeList.length; i++) {
