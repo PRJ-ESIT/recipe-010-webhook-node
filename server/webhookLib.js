@@ -174,7 +174,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			});
 
 			// Create a basic API client
-			var box = sdk.getBasicClient('x00D0eSfxZaBbLBTgxGO5UxGReuP7Ue8');
+			var box = sdk.getBasicClient('kmYJkekbXw8Nyr57mafUgkH9lbUlAWTN');
 
 			async.forEachSeries(nodeList, function(node, callback) {
 				var pdf = node;
