@@ -19,6 +19,7 @@
     "url": "https://github.com/docusign/recipe-010-webhook-node.git"
   },
   "dependencies": {
+    "async": "^2.1.4",
     "body-parser": "1.15.0",
     "box-node-sdk": "^1.2.0",
     "docusign-esign": "2.0.3",

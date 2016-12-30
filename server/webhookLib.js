@@ -2,8 +2,9 @@
 const xmlParser = require('xml2js');
 const fs = require('fs');
 const path = require('path');
+const async = require('async');
 // Initialize Box SDK
-var BoxSDK = require('box-node-sdk');
+const BoxSDK = require('box-node-sdk');
 const dsRecipeLib = require('./dsRecipeLib');
 var docusign
 
@@ -173,72 +174,90 @@ WebhookLib.prototype.webhookListener = function(data) {
 			});
 
 			// Create a basic API client
-			var box = sdk.getBasicClient('Ub31eJBHrpvktIP8vvAKD2YlqgHvEMcy');
+			var box = sdk.getBasicClient('x00D0eSfxZaBbLBTgxGO5UxGReuP7Ue8');
 
-			for (var i = 0; i < nodeList.length; i++) {
-
-				(function() {
-
-
-				console.log('nodeList.length: ' + nodeList.length);
-				var pdf = nodeList[i];
-				// var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
-				//console.log(pdf.PDFBytes[0]);
+			async.forEach(nodeList, function(node, callback) {
+				var pdf = node;
 				filename = "doc_" + (pdf.DocumentID ? pdf.DocumentID[0] : "") + ".pdf";
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
-				console.log('file' + i + ':' + fullFilename);
-				try {
-					fs.writeFileSync(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
+				console.log('file' + ':' + fullFilename);
 
-
-
-
-
-						var doc = fs.readFileSync(filename);
-						var folderId = '15078518730';
-						box.folders.get(envId, null, function(err, response) {
-							if(err) {
-								console.log('folder not found');
-								// console.log('folders err: ' + err);
-								box.folders.create('15078518730', envId, function(err, response) {
-									if(err) {
-										console.log('could not create folder');
-										box.files.uploadFile(folderId, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
-											console.log('uploadFile: ' + i);
-											if(err) console.log('box err:' + err);
-											console.log(response);
-										});
-									} else {
-										console.log('folder was found: ' + response.Id);
-										box.files.uploadFile(response.id, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
-											console.log('uploadFile: ' + i);
-											if(err) console.log('box err:' + err);
-											console.log(response);
-										});
-									}
-								});
-							} else {
-								console.log('folder was already created');
-								box.files.uploadFile(envId, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
-									console.log('uploadFile: ' + i);
-									if(err) console.log('box err:' + err);
-									console.log(response);
-								});
-							// console.log('folders response: ' + response);
-							}
-						})
-
-
+				try{
+					fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'), function(err, data) {
+						if (err) {
+							console.log('Error writing file: ' + err);
+							callback(err);
+						} else {
+							console.log("File saved");
+							callback();
+						}
+					});
 				} catch (ex) {
 					// Couldn't write the file! Alert the humans!
 					console.error("!!!!!! PROBLEM DocuSign Webhook: Couldn't store pdf " + filename + " !");
 					return;
 				}
+			}, function(err) {
+				// One of the iterations produced an error.
+      	// All processing will now stop.
+      	console.log('A file failed to process');
+    	} else {
+      	console.log('All files have been processed successfully');
+			});
 
-			})();
-
-
-			}
+			// for (var i = 0; i < nodeList.length; i++) {
+			// 	console.log('nodeList.length: ' + nodeList.length);
+			// 	var pdf = nodeList[i];
+			// 	// var pdfBytes = new Buffer(pdf.PDFBytes[0], 'base64');
+			// 	//console.log(pdf.PDFBytes[0]);
+			// 	filename = "doc_" + (pdf.DocumentID ? pdf.DocumentID[0] : "") + ".pdf";
+			// 	var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
+			// 	console.log('file' + i + ':' + fullFilename);
+			// 	try {
+			// 		fs.writeFile(fullFilename, new Buffer(pdf.PDFBytes[0], 'base64'));
+			//
+			// 		(function(filename, envId) {
+			// 			var doc = fs.readFileSync(filename);
+			// 			var folderId = '15078518730';
+			// 			box.folders.get(envId, null, function(err, response) {
+			// 				if(err) {
+			// 					console.log('folder not found');
+			// 					// console.log('folders err: ' + err);
+			// 					box.folders.create('15078518730', envId, function(err, response) {
+			// 						if(err) {
+			// 							console.log('could not create folder');
+			// 							box.files.uploadFile(folderId, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
+			// 								console.log('uploadFile: ' + i);
+			// 								if(err) console.log('box err:' + err);
+			// 								console.log(response);
+			// 							});
+			// 						} else {
+			// 							console.log('folder was found: ' + response.Id);
+			// 							box.files.uploadFile(response.id, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
+			// 								console.log('uploadFile: ' + i);
+			// 								if(err) console.log('box err:' + err);
+			// 								console.log(response);
+			// 							});
+			// 						}
+			// 					});
+			// 				} else {
+			// 					console.log('folder was already created');
+			// 					box.files.uploadFile(envId, "E" + envId + "_" + i + ".pdf", doc, function(err, response) {
+			// 						console.log('uploadFile: ' + i);
+			// 						if(err) console.log('box err:' + err);
+			// 						console.log(response);
+			// 					});
+			// 				// console.log('folders response: ' + response);
+			// 				}
+			// 			})
+			// 		})(fullFilename, envelopeId);
+			//
+			// 	} catch (ex) {
+			// 		// Couldn't write the file! Alert the humans!
+			// 		console.error("!!!!!! PROBLEM DocuSign Webhook: Couldn't store pdf " + filename + " !");
+			// 		return;
+			// 	}
+			// }
 		}
 		return;
 	});
