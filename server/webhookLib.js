@@ -234,10 +234,11 @@ WebhookLib.prototype.webhookListener = function(data) {
 					console.error("!!!!!! PROBLEM DocuSign Webhook: Couldn't store pdf " + filename + " !");
 					return;
 				}
+
+			})();
+
+
 			}
-
-})();
-
 		}
 		return;
 	});
