@@ -176,7 +176,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			// Create a basic API client
 			var box = sdk.getBasicClient('x00D0eSfxZaBbLBTgxGO5UxGReuP7Ue8');
 
-			async.forEach(nodeList, function(node, callback) {
+			async.forEachSeries(nodeList, function(node, callback) {
 				var pdf = node;
 				filename = "doc_" + (pdf.DocumentID ? pdf.DocumentID[0] : "") + ".pdf";
 				var fullFilename = path.resolve(__filename + "/../../" + self.xmlFileDir + "E" + envelopeId + "/" + filename);
