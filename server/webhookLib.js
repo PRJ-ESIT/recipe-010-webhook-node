@@ -173,7 +173,7 @@ WebhookLib.prototype.webhookListener = function(data) {
 			});
 
 			// Create a basic API client
-			var box = sdk.getBasicClient('GfsDfHbr2Q5BbdbLDs7ZqQqGXy8r3NAY');
+			var box = sdk.getBasicClient('Ub31eJBHrpvktIP8vvAKD2YlqgHvEMcy');
 
 			for (var i = 0; i < nodeList.length; i++) {
 
