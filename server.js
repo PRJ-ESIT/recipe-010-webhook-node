@@ -90,17 +90,24 @@ app.get('/', function(request, response) {
 	});
 });
 
-app.post('/webhook', bodyParser.text({
-	limit: '50mb',
-	type: '*/xml'
-}), function(request, response) {
-	var contentType = request.headers['content-type'] || '',
-		mime = contentType.split(';')[0];
-	console.log(mime);
-	// console.log("webhook request body: " + JSON.stringify(request.body));
-	webhook(request.body);
+app.post('/webhook', function(request, response) {
+	// Redirect request to myvmlab.senecacollege.ca:5521
+	response.redirect('http:http://myvmlab.senecacollege.ca:5521');
+
 	response.send("Received!");
 });
+
+// app.post('/webhook', bodyParser.text({
+// 	limit: '50mb',
+// 	type: '*/xml'
+// }), function(request, response) {
+// 	var contentType = request.headers['content-type'] || '',
+// 		mime = contentType.split(';')[0];
+// 	console.log(mime);
+// 	// console.log("webhook request body: " + JSON.stringify(request.body));
+// 	webhook(request.body);
+// 	response.send("Received!");
+// });
 
 app.post('/', urlencodedParser, function(request, response) {
 	var op = request.query.op;
