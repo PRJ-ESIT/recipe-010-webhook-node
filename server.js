@@ -92,7 +92,7 @@ app.get('/', function(request, response) {
 
 app.post('/webhook', function(request, response) {
 	// Redirect request to myvmlab.senecacollege.ca:5521
-	response.redirect('http:http://myvmlab.senecacollege.ca:5521');
+	response.redirect('http://myvmlab.senecacollege.ca:5521');
 
 	response.send("Received!");
 });
