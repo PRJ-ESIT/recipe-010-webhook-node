@@ -111,7 +111,7 @@ app.post('/webhook', bodyParser.text({
 	console.log(body);
 
 	var options = {
-	host: 'http://myvmlab.senecacollege.ca',
+	host: 'myvmlab.senecacollege.ca',
 	port: 5521,
 	path: '/',
 	method: 'POST',
