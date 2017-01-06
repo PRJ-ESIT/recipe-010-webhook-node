@@ -97,7 +97,10 @@ app.get('/', function(request, response) {
 //
 // });
 
-app.post('/webhook', function(request, response) {
+app.post('/webhook', bodyParser.text({
+		limit: '50mb',
+		type: '*/xml'
+	}), function(request, response) {
 	var contentType = request.headers['content-type'] || '',
 		mime = contentType.split(';')[0];
 	console.log(mime);
