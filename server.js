@@ -28,6 +28,7 @@
 const express = require('express');
 const serveStatic = require('serve-static');
 const app = express();
+const http = require("http");
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const urlencodedParser = bodyParser.urlencoded({
@@ -90,24 +91,55 @@ app.get('/', function(request, response) {
 	});
 });
 
+// app.post('/webhook', function(request, response) {
+// 	// Redirect request to myvmlab.senecacollege.ca:5521
+// 	//response.redirect(307, 'http://myvmlab.senecacollege.ca:5521');
+//
+// });
+
 app.post('/webhook', function(request, response) {
-	// Redirect request to myvmlab.senecacollege.ca:5521
-	response.redirect(307, 'http://myvmlab.senecacollege.ca:5521');
+	var contentType = request.headers['content-type'] || '',
+		mime = contentType.split(';')[0];
+	console.log(mime);
+	// // console.log("webhook request body: " + JSON.stringify(request.body));
+	// webhook(request.body);
+
+	var body = request.body;
+	console.log(body);
+
+	var options = {
+	host: 'http://myvmlab.senecacollege.ca:5521',
+	port: 8080,
+	path: '/',
+	method: 'POST',
+	headers: {
+		'Content-Type': mime ? mime : 'application/xml',
+		'Content-Length': Buffer.byteLength(body)
+	}
+};
+
+var req = http.request(options, function(res)
+	{
+		var output = '';
+		res.setEncoding('utf8');
+
+		res.on('data', function (chunk) {
+			output += chunk;
+		});
+
+		res.on('end', function() {
+				var obj = JSON.parse(output);
+				return response.status(200).json(obj);
+		});
+	});
+	req.on('error', function(err) {
+			//response.send('error: ' + err.message);
+	});
+	req.write(body);
+	req.end();
 
 	response.send("Received!");
 });
-
-// app.post('/webhook', bodyParser.text({
-// 	limit: '50mb',
-// 	type: '*/xml'
-// }), function(request, response) {
-// 	var contentType = request.headers['content-type'] || '',
-// 		mime = contentType.split(';')[0];
-// 	console.log(mime);
-// 	// console.log("webhook request body: " + JSON.stringify(request.body));
-// 	webhook(request.body);
-// 	response.send("Received!");
-// });
 
 app.post('/', urlencodedParser, function(request, response) {
 	var op = request.query.op;
